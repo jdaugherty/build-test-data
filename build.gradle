@@ -1,30 +1,30 @@
 buildscript {
     repositories {
-        mavenLocal()
+        mavenCentral()
+        maven { url "https://repo.grails.org/grails/core/" }
         maven { url 'https://repo.grails.org/grails/libs-snapshots-local/' }
-        maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://repository.apache.org/content/repositories/snapshots"}
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "org.grails:grails-docs:${project.ext.properties.grailsDocsVersion ?: grailsVersion}"
-        classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
+        implementation platform("org.grails:grails-bom:7.0.0-SNAPSHOT")
+        implementation("org.grails:grails-gradle-plugin:7.0.0-SNAPSHOT")
+        //TODO: implementation("org.grails.plugins:hibernate5:9.0.0-SNAPSHOT")
+        implementation 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
     }
 }
 
 plugins {
-    id "com.adarshr.test-logger" version "2.0.0"
+    id 'com.adarshr.test-logger' version '4.0.0'
 }
 
 repositories {
     mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
+    mavenCentral()
+    maven { url "https://repo.grails.org/grails/core/" }
+    maven { url "https://repository.apache.org/content/repositories/snapshots"}
 }
 
 version project.projectVersion
-
-ext {
-    commonBuild = new File(project.rootDir, "gradle").absolutePath
-}
 
 subprojects {
     version project.projectVersion
@@ -40,12 +40,11 @@ subprojects {
 
     repositories {
         mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://repo.grails.org/grails/core/" }
+        maven { url "https://repository.apache.org/content/repositories/snapshots"}
     }
 
-
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
+    sourceCompatibility = targetCompatibility = JavaVersion.toVersion(71)
 
     tasks.withType(Test) {
         useJUnitPlatform()
